@@ -12,7 +12,6 @@ pipeline{
         stage('Build image'){
             steps{
                 sh """
-                cd ${mainDir}
                 ./gradlew clean build
                 """
                 script{
