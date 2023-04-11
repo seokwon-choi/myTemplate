@@ -1,4 +1,4 @@
-def mainDir="/home/ubuntu/myTemplate"
+def mainDir="myTemplate"
 
 pipeline{
     agent any
