@@ -15,7 +15,7 @@ pipeline{
                 ./gradlew clean build
                 """
                 script{
-                    dockerImage = docker.build("choiseokwon/myTemplate:0.0.1")
+                    dockerImage = docker.build("choiseokwon/mytemplate:0.0.1")
                 }
             }
         }
