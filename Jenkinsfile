@@ -36,7 +36,7 @@ pipeline{
                     withDockerRegistry([credentialsId: "dockerhub", url: ""]) {
                         script {
                             dockerImage.pull()
-                            dockerImage.run('-d -p 8080:8080')
+                            dockerImage.run('-p 8080:8080')
                         }
                     }
                 }
