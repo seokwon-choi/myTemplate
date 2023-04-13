@@ -32,11 +32,13 @@ pipeline{
         stage('Deploy'){
             steps{
                 sshagent(credentials : ["deploy-key"]) {
-                    sh "ssh -o StrictHostKeyChecking=no ubuntu@ec2-13-125-123-49.ap-northeast-2.compute.amazonaws.com"
-                    withDockerRegistry([credentialsId: "dockerhub", url: ""]) {
-                        script {
-                            dockerImage.pull()
-                            dockerImage.run('-p 8080:8080')
+                    script {
+                        sh "ssh -o StrictHostKeyChecking=no ubuntu@ec2-13-125-123-49.ap-northeast-2.compute.amazonaws.com"
+                        withDockerRegistry([credentialsId: "dockerhub", url: ""]) {
+                            script {
+                                dockerImage.pull()
+                                dockerImage.run('-p 8080:8080')
+                            }
                         }
                     }
                 }
