@@ -36,12 +36,9 @@ pipeline{
                         //sh "ssh -o StrictHostKeyChecking=no ubuntu@ec2-13-125-123-49.ap-northeast-2.compute.amazonaws.com"
                         withDockerRegistry([credentialsId: "dockerhub", url: ""]) {
                             dockerImage = dockerImage.inside("ubuntu@ec2-13-125-123-49.ap-northeast-2.compute.amazonaws.com")
-                            dockerImage.inside("--skip-hostname-check") {
-                                script {
-                                    dockerImage.pull()
-                                    dockerImage.run('-p 8080:8080')
-                                }
-                            }
+                            dockerImage.inside("--skip-hostname-check")
+                            dockerImage.pull()
+                            dockerImage.run('-p 8080:8080')
                         }
                     }
                 }
