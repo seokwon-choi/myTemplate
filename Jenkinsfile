@@ -34,10 +34,14 @@ pipeline{
                 sshagent(credentials : ["deploy-key"]) {
                     script {
                         withDockerRegistry([credentialsId: "dockerhub", url: ""]) {
-                            sshCommand = "ssh -o StrictHostKeyChecking=no ubuntu@ec2-13-125-123-49.ap-northeast-2.compute.amazonaws.com"
-                            dockerImage = dockerImage.inside(sshCommand)
-                            dockerImage.pull()
-                            dockerImage.run('-p 8080:8080', '--skip-hostname-check')
+                            """
+                                sh ssh -o StrictHostKeyChecking=no ubuntu@ec2-13-125-123-49.ap-northeast-2.compute.amazonaws.com
+                                sh docker stop choiseokwon/mytemplate:0.0.1
+                                sh docker rm choiseokwon/mytemplate:0.0.1
+                                sh docker rmi choiseokwon/mytemplate:0.0.1
+                                docker pull choiseokwon/mytemplate:0.0.1
+                                docker run -d -p 8080:8080 choiseokwon/mytemplate:0.0.1
+                            """
                         }
                     }
                 }
