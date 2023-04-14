@@ -56,10 +56,10 @@ pipeline{
     }
     post {
         success {
-            slackSend (color: '#36a64f', message: "배포 성공! ${env.BUILD_URL}", tokenCredentialId: ${SLACK_TOKEN})
+            slackSend (color: '#36a64f', message: "배포 성공! ${env.BUILD_URL}", tokenCredentialId: "${SLACK_TOKEN}")
         }
         failure {
-            slackSend (color: '#FF0000', message: "배포 실패 ㅠ ${env.BUILD_URL}", tokenCredentialId: ${SLACK_TOKEN})
+            slackSend (color: '#FF0000', message: "배포 실패 ㅠ ${env.BUILD_URL}", tokenCredentialId: "${SLACK_TOKEN}")
         }
     }
 }
