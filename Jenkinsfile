@@ -38,8 +38,8 @@ pipeline{
                                 docker stop backend; \
                                 docker rm backend; \
                                 docker rmi choiseokwon/mytemplate:0.0.1; \
-                                docker pull choiseokwon/mytemplate:0.0.1 \
-                                docker run --name backend -d -p 8080:8080 choiseokwon/mytemplate:0.0.1 '"
+                                docker pull choiseokwon/mytemplate:0.0.1; \
+                                docker run --name backend -d -p 8080:8080 choiseokwon/mytemplate:0.0.1; '"
 
                         }
                     }
