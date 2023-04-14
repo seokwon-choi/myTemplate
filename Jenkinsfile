@@ -3,9 +3,9 @@ def mainDir="myTemplate"
 pipeline{
     agent any
 
-//    environment {
-//        SLACK_TOKEN = credentials('slack-token')
-//    }
+    steps{
+        slackSend (color: '#36a64f', message: "배포 시작! ${env.BUILD_URL}")
+    }
 
     stages{
         stage('Git Pull'){
