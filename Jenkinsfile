@@ -3,14 +3,11 @@ def mainDir="myTemplate"
 pipeline{
     agent any
 
-    steps{
-        slackSend (color: '#36a64f', message: "배포 시작! ${env.BUILD_URL}")
-    }
-
     stages{
         stage('Git Pull'){
             steps{
                 checkout scm
+                slackSend (color: '#36a64f', message: "배포 시작! ${env.BUILD_URL}")
             }
         }
         stage('Build image'){
