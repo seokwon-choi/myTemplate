@@ -1,5 +1,6 @@
-package com.example.myTemplate.common.exception;
+package com.example.myTemplate.common.handler;
 
+import com.example.myTemplate.common.exception.AuthException;
 import com.example.myTemplate.common.response.Error;
 import com.example.myTemplate.common.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Path;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,7 +28,7 @@ import java.util.stream.StreamSupport;
 //@RestControllerAdvice(basePackageClasses = "UserController.class")
 
 @RestControllerAdvice()
-public class GlobalControllerAdvice {
+public class GlobalExceptionHandler {
 
     //전체 에러를 잡는다 -> 에러의 class명을 알기위해 사용
     @ExceptionHandler(value = Exception.class)
@@ -119,6 +119,16 @@ public class GlobalControllerAdvice {
                 .setRequestUrl(httpServletRequest.getRequestURI());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(value = AuthException.class)
+    public ResponseEntity authException(AuthException e){
+
+        System.out.println("---------------------");
+        System.out.println(e.getMessage());
+        System.out.println("---------------------");
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
     }
 
 }
