@@ -25,5 +25,7 @@ public class UserDto {
     @NotNull
     private Integer age;
 
+    private long number;
+
 
 }
