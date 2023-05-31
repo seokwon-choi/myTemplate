@@ -1,14 +1,21 @@
 package com.example.myTemplate.resttemplate.service;
 
+import com.example.myTemplate.resttemplate.dto.Req;
 import com.example.myTemplate.resttemplate.dto.ReqUserDto;
 import com.example.myTemplate.resttemplate.dto.ResUserDto;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 
+@Slf4j
 @Service
 public class RestTemplateService {
 
@@ -58,6 +65,68 @@ public class RestTemplateService {
         System.out.println(response.getHeaders());
         System.out.println(response.getBody());
 
+        return response.getBody();
+    }
+
+    public ResUserDto exchangeUser(){
+
+        URI uri = UriComponentsBuilder
+                .fromUriString("http://localhost:8082")
+                .path("/test/api/server/user")
+                .encode()
+                .build()
+                //.expand("jerry", 20) -> pathvariable 같은 경우 path에 {name} 변수 선언 후 expand에 순서대로 값을 넣는다.
+                .toUri();
+        System.out.println(uri.toString());
+
+        ReqUserDto userReq = new ReqUserDto();
+        userReq.setAge(20);
+        userReq.setName("jerry");
+        userReq.setNumber(123);
+
+        RequestEntity<ReqUserDto> requestEntity = RequestEntity.post(uri)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("x-authorization", "abcd")
+                .header("custom-header", "fffff")
+                .body(userReq);
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<ResUserDto> response = restTemplate.exchange(requestEntity, ResUserDto.class);
+        return response.getBody();
+    }
+
+    public Req<ResUserDto> genericExchangeUser(){
+        log.info("%%%%%%%genericExchangeUserService%%%%%");
+
+        URI uri = UriComponentsBuilder
+                .fromUriString("http://localhost:8082")
+                .path("/test/api/server/user")
+                .encode()
+                .build()
+                //.expand("jerry", 20) -> pathvariable 같은 경우 path에 {name} 변수 선언 후 expand에 순서대로 값을 넣는다.
+                .toUri();
+        System.out.println(uri.toString());
+
+        ReqUserDto userReq = new ReqUserDto();
+        userReq.setAge(20);
+        userReq.setName("jerry");
+        userReq.setNumber(123);
+
+        Req req = new Req();
+        req.setHeader(new Req.Header());
+        req.setBody(userReq);
+
+        RequestEntity<Req<ReqUserDto>> requestEntity = RequestEntity.post(uri)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("x-authorization", "abcd")
+                .header("custom-header", "fffff")
+                .body(req);
+        log.info("#######1##########");
+        RestTemplate restTemplate = new RestTemplate();
+        log.info("#######2##########");
+        var tmp = new ParameterizedTypeReference<Req<ResUserDto>>(){};
+        ResponseEntity<Req<ResUserDto>> response = restTemplate.exchange(requestEntity, tmp);
+        log.info("#######3##########");
         return response.getBody();
     }
 
