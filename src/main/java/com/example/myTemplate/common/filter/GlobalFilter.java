@@ -22,6 +22,11 @@ public class GlobalFilter implements Filter {
         ContentCachingResponseWrapper httpServletResponse = new ContentCachingResponseWrapper((HttpServletResponse) response);
         // 생성 시에는 read를 하지 않고 길이만 초기화를 시켜준다
 
+        //RequestBodyWrapper 만들어 사용하면 doFilter전에서 Wrapper를 사용할 수 있다.
+        RequestBodyWrapper requestWrapper = new RequestBodyWrapper((HttpServletRequest) request);
+        String body = requestWrapper.getRequestBody();
+        //body 출력 가능
+
         // 전처리
         chain.doFilter(httpServletRequest, httpServletResponse);
         // doFilter가 실행이 되면서 실내 내부 Spring 안으로 들어가서야
